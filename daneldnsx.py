@@ -447,9 +447,9 @@ def secure_query(name, rr_type, rr_class="IN", flags=["RD"], tries = 1, flex=Fal
 		raise Exception("%s lookup failed (server error or dnssec validation failed)" % name)
 	if pkt.rcode() == "NXDOMAIN":
 		if "AD" in pkt.flags():
-			raise Exception("%s lookup failed (non-existence proven by DNSSEC)" % hostname )
+			raise Exception("%s lookup failed (non-existence proven by DNSSEC)" % name )
 		else:
-			raise Exception("%s lookup failed" % hostname )
+			raise Exception("%s lookup failed" % name )
 	if pkt.rcode() == "NOERROR":
 		if "AD" not in pkt.flags():
 			if not flex:
