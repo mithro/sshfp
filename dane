@@ -68,9 +68,17 @@ def create_tlsa(hostname, certtype, reftype):
 	"""Creates a TLSA RRtype"""
 	""" get all A/AAAA records for hostname """
 	if secure:
-		pkt = ldnsx.secure_query(hostname, "ANY", flex=True)
+		try:
+			pkt = ldnsx.secure_query(hostname, "ANY", flex=True)
+		except Exception, e:
+			print >> sys.stderr, e
+			return ""
 	else:
-		pkt = ldnsx.query(hostname, "ANY")
+		try:
+			pkt = ldnsx.query(hostname, "ANY")
+		except Exception, e:
+			print >> sys.stderr, e
+			return ""
 	records = pkt.answer( rr_type = { "ipv4":"A",  "ipv6":"AAAA",  "both":"A|AAAA" }[transport] )
 
 	drafts, rfcs = [], []
