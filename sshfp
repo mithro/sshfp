@@ -194,16 +194,13 @@ def process_records(data, hostnames):
 		if "," in host:
 			host = host.split(",")[0]
 		if all_hosts or host in hostnames or host == hostnames:
+			if not regexfilter.search(str(host)):
+				print >> sys.stderr, "- Host excluded by regex pattern: {}".format(host)
+				continue
 			if not check_keytype(keytype):
 				continue
 			for fphash in fphashes: 
-				if regexfilter:
-					if regexfilter.search(str(host)):
-						all_records.append(create_sshfp(host, keytype, key, fphash))
-					else:
-						print >> sys.stderr, "- Host excluded by regex pattern: {}".format(host)
-				else:
-					all_records.append(create_sshfp(host, keytype, key, fphash))
+				all_records.append(create_sshfp(host, keytype, key, fphash))
 	if all_records:
 		all_records.sort()
 		return "\n".join(all_records)
