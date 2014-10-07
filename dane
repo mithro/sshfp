@@ -248,12 +248,16 @@ if not args.hosts:
 	sys.exit("Host are needed.")
 #	main("--help")
 
+def print_out(s):
+	if s:
+		print s
+
 for host in args.hosts:
 	if host[-1] != ".":
 		host += "."
 if not args.axfr:
 	for host in args.hosts:
-		print create_tlsa(host,1,reftype)
+		print_out(create_tlsa(host,1,reftype))
 if args.axfr:
 	# Try and AXFR it
 	if len(args.nameserver) == 0:
@@ -269,9 +273,9 @@ if args.axfr:
 				ipv6.append(rr.owner())
 		if transport != "ipv6":
 			for host in ipv4:
-				print create_tlsa(host,1,reftype)
+				print_out(create_tlsa(host,1,reftype))
 		if transport != "ipv4":
 			for host in ipv6:
-				print create_tlsa(host,1,reftype)
+				print_out(create_tlsa(host,1,reftype))
 
 
