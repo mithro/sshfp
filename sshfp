@@ -271,6 +271,7 @@ def sshfp_from_dns(hosts):
 	global algos
 
 	hosts = sort_uniq(hosts)
+	filtered_hosts = []
 	khdns = ''
 
 	for p in port:
@@ -286,9 +287,13 @@ def sshfp_from_dns(hosts):
 	return process_records(khdns, hosts)
 
 def sort_uniq(dlist):
+	global regexfilter
 	a = []
 	for l in dlist:
 		for q in l.split('\n'):
+			if not regexfilter.search(str(q)):
+				print >> sys.stderr, "- Host excluded by regex pattern: {}".format(q)
+				continue
 			if not str(q) in a:
 				a.append(str(q))
 	return sorted(a)
